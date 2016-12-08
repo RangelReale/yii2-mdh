@@ -2,7 +2,7 @@
 
 namespace RangelReale\yii2mdh;
 
-class DataConversionMessage extends RangelReale\mdh\DataConversionMessage
+class DataConversionMessage extends \RangelReale\mdh\DataConversionMessage
 {
     public function getAttribute($options)
     {

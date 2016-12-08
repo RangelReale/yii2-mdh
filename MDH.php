@@ -7,6 +7,9 @@ use RangelReale\mdh\BaseMDH;
 
 class MDH extends Object
 {
+    /**
+     * @var BaseMDH
+     */
     public $mdh;
     
     public function init()
