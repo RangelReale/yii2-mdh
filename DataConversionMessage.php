@@ -6,6 +6,9 @@ class DataConversionMessage extends \RangelReale\mdh\DataConversionMessage
 {
     public function getAttribute($options)
     {
+        if (isset($options['_attribute']) && is_string($options['_attribute'])) {
+            return $options['_attribute'];
+        }
         return 'Value';
     }
 
