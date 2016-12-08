@@ -24,7 +24,8 @@ class DataConversionMessage extends \RangelReale\mdh\DataConversionMessage
             return \Yii::t('yii', '{attribute} must be a number.', [
                 'attribute' => $attribute,
             ]);
-        } elseif ($datatype == 'date' || $datatype == 'time' || $datatype == 'datetime') {
+        } elseif ($datatype == 'date' || $datatype == 'time' || $datatype == 'datetime' 
+            || $datatype == 'timeperiod' || $datatype == 'walldatetime') {
             return \Yii::t('yii', 'The format of {attribute} is invalid.', [
                 'attribute' => $attribute,
             ]);
