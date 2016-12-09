@@ -5,21 +5,22 @@ namespace RangelReale\yii2mdh;
 /**
  * Replacement Yii2 Formatter that uses MDH
  */
-abstract class Formatter extends \yii\i18n\Formatter
+class Formatter extends \yii\i18n\Formatter
 {
-    public $converter = 'user';
-    
     /**
-     * @return \RangelReale\mdh\BaseMDH Description
+     * @var \RangelReale\mdh\BaseMDH
      */
-    abstract public function mdh();
+    public $mdh;
+    
+    public $converterFrom = null;
+    public $converter = 'user';
     
     public function asRaw($value)
     {
         if ($value === null) {
             return $this->nullDisplay;
         }
-        return $this->mdh()->format($this->converter, 'raw', $value);
+        return $this->getMdh()->convert($this->converterFrom, $this->converter, 'raw', $value);
     }
     
     public function asText($value)
@@ -27,7 +28,7 @@ abstract class Formatter extends \yii\i18n\Formatter
         if ($value === null) {
             return $this->nullDisplay;
         }
-        return $this->mdh()->format($this->converter, 'text', $value);
+        return $this->getMdh()->convert($this->converterFrom, $this->converter, 'text', $value);
     }
     
     public function asBoolean($value)
@@ -36,7 +37,7 @@ abstract class Formatter extends \yii\i18n\Formatter
             return $this->nullDisplay;
         }
 
-        return $this->mdh()->format($this->converter, 'boolean', $value);
+        return $this->getMdh()->convert($this->converterFrom, $this->converter, 'boolean', $value);
     }
     
     public function asDate($value, $format = null)
@@ -44,7 +45,7 @@ abstract class Formatter extends \yii\i18n\Formatter
         if ($format === null) {
             $format = $this->dateFormat;
         }
-        return $this->mdh()->format($this->converter, 'date', $value);
+        return $this->getMdh()->convert($this->converterFrom, $this->converter, 'date', $value);
     }
     
     public function asTime($value, $format = null)
@@ -52,7 +53,7 @@ abstract class Formatter extends \yii\i18n\Formatter
         if ($format === null) {
             $format = $this->timeFormat;
         }
-        return $this->mdh()->format($this->converter, 'time', $value);
+        return $this->getMdh()->convert($this->converterFrom, $this->converter, 'time', $value);
     }
     
     public function asDatetime($value, $format = null)
@@ -60,7 +61,7 @@ abstract class Formatter extends \yii\i18n\Formatter
         if ($format === null) {
             $format = $this->datetimeFormat;
         }
-        return $this->mdh()->format($this->converter, 'datetime', $value);
+        return $this->getMdh()->convert($this->converterFrom, $this->converter, 'datetime', $value);
     }
 
     public function asInteger($value, $options = [], $textOptions = [])
@@ -68,7 +69,7 @@ abstract class Formatter extends \yii\i18n\Formatter
         if ($value === null) {
             return $this->nullDisplay;
         }
-        return $this->mdh()->format($this->converter, 'integer', $value);
+        return $this->getMdh()->convert($this->converterFrom, $this->converter, 'integer', $value);
     }
     
     public function asDecimal($value, $decimals = null, $options = [], $textOptions = [])
@@ -76,7 +77,7 @@ abstract class Formatter extends \yii\i18n\Formatter
         if ($value === null) {
             return $this->nullDisplay;
         }
-        return $this->mdh()->format($this->converter, 'decimal', $value, ['decimals'=>$decimals]);
+        return $this->getMdh()->convert($this->converterFrom, $this->converter, 'decimal', $value, ['decimals'=>$decimals]);
     }    
     
     public function asCurrency($value, $currency = null, $options = [], $textOptions = [])
@@ -84,7 +85,7 @@ abstract class Formatter extends \yii\i18n\Formatter
         if ($value === null) {
             return $this->nullDisplay;
         }
-        return $this->mdh()->format($this->converter, 'currency', $value);
+        return $this->getMdh()->convert($this->converterFrom, $this->converter, 'currency', $value);
     }    
     
     public function asShortSize($value, $decimals = null, $options = [], $textOptions = [])
@@ -92,7 +93,7 @@ abstract class Formatter extends \yii\i18n\Formatter
         if ($value === null) {
             return $this->nullDisplay;
         }
-        return $this->mdh()->format($this->converter, 'bytes', $value);
+        return $this->getMdh()->convert($this->converterFrom, $this->converter, 'bytes', $value);
     }    
     
     public function asTimePeriod($value, $format = null)
@@ -100,6 +101,16 @@ abstract class Formatter extends \yii\i18n\Formatter
         if ($value === null) {
             return $this->nullDisplay;
         }
-        return $this->mdh()->format($this->converter, 'timeperiod', $value);
+        return $this->getMdh()->convert($this->converterFrom, $this->converter, 'timeperiod', $value);
     }    
+    
+     /**
+     * @return \RangelReale\mdh\BaseMDH
+     */
+    private function getMdh()
+    {
+        if (isset($this->mdh))
+            return $this->mdh;
+        return \Yii::$app->mdh;
+    }
 }
