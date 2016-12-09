@@ -1,5 +1,5 @@
 {
-    "name": "RangelReale/yii2-mdh",
+    "name": "rangelreale/yii2-mdh",
     "description": "Yii2 helper form PHP MDH",
     "keywords": ["yii2", "format"],
     "license": "BSD-3-Clause",
@@ -13,7 +13,7 @@
     "type": "yii2-extension",
     "require": {
         "yiisoft/yii2": "*",
-        "RangelReale/mdh": "*"
+        "rangelreale/mdh": "*"
     },
     "autoload": {
         "psr-4": {
