@@ -2,6 +2,8 @@
 
 namespace RangelReale\yii2mdh;
 
+use yii\base\InvalidParamException;
+
 /**
  * Replacement Yii2 Formatter that uses MDH
  */
@@ -14,6 +16,23 @@ class Formatter extends \yii\i18n\Formatter
     
     public $converterFrom = null;
     public $converter = 'user';
+    
+    public function format($value, $format)
+    {
+        try {
+            return parent::format($value, $format);
+        } catch (InvalidParamException $e) {
+            return $this->mdhFormat($value, $format);
+        }
+    }
+    
+    public function mdhFormat($value, $format)
+    {
+        if ($value === null) {
+            return $this->nullDisplay;
+        }
+        return $this->getMdh()->convert($this->converterFrom, $this->converter, $format, $value);
+    }
     
     public function asRaw($value)
     {
