@@ -12,9 +12,26 @@ class MDH extends Object
      */
     public $mdh;
     
+    public $converters;
+    public $datatypeAlias;
+    
     public function init()
     {
         $this->mdh = new Yii2MDH();
+        if (!empty($this->converters))
+        {
+            foreach ($this->converters as $cname => $cvalue)
+            {
+                $this->mdh->setConverter($cname, \Yii::createObject($cvalue, [$this->mdh]));
+            }
+        }
+        if (!empty($this->datatypeAlias))
+        {
+            foreach ($this->datatypeAlias as $cname => $cvalue)
+            {
+                $this->mdh->addDataTypeAlias($cname, $cvalue);
+            }
+        }
         $this->mdh->setDataConversionMessage(new DataConversionMessage());
     }
     
@@ -22,7 +39,14 @@ class MDH extends Object
     {
         return $this->mdh->$name;
     }
-    
+
+    /*
+    public function __set($name, $value)
+    {
+        $this->mdh->$name = $value;
+    }
+     */
+
     public function __call($name, $args)
     {
         return call_user_func_array([$this->mdh, $name], $args);
