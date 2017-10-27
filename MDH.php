@@ -10,46 +10,29 @@ class MDH extends Object
     /**
      * @var BaseMDH
      */
-    public $mdh;
-    
-    public $converters;
-    public $datatypeAlias;
-    
-    public function init()
-    {
-        $this->mdh = new Yii2MDH();
-        if (!empty($this->converters))
-        {
-            foreach ($this->converters as $cname => $cvalue)
-            {
-                $this->mdh->setConverter($cname, \Yii::createObject($cvalue, [$this->mdh]));
-            }
-        }
-        if (!empty($this->datatypeAlias))
-        {
-            foreach ($this->datatypeAlias as $cname => $cvalue)
-            {
-                $this->mdh->addDataTypeAlias($cname, $cvalue);
-            }
-        }
-        $this->mdh->setDataConversionMessage(new DataConversionMessage());
-    }
+    private $_mdh;
     
     public function __get($name)
     {
-        return $this->mdh->$name;
+        return $this->getMdh()->$name;
     }
 
-    /*
     public function __set($name, $value)
     {
-        $this->mdh->$name = $value;
+        $this->getMdh()->$name = $value;
     }
-     */
 
     public function __call($name, $args)
     {
-        return call_user_func_array([$this->mdh, $name], $args);
+        return call_user_func_array([$this->getMdh(), $name], $args);
+    }
+    
+    public function getMdh()
+    {
+        if (!isset($this->_mdh)) {
+            $this->_mdh = new Yii2MDH();
+        }
+        return $this->_mdh;
     }
 }
 
@@ -58,5 +41,10 @@ class Yii2MDH extends BaseMDH
     public function getLocale()
     {
         return \Yii::$app->language;
+    }
+    
+    public function setLocale($value) 
+    {
+        throw new \yii\base\NotSupportedException('Locale setting not supported');
     }
 }
