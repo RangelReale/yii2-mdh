@@ -2,10 +2,9 @@
 
 namespace RangelReale\yii2mdh;
 
-use yii\base\Object;
 use RangelReale\mdh\BaseMDH;
 
-class MDH extends Object
+class MDH extends \yii\base\BaseObject
 {
     /**
      * @var BaseMDH
